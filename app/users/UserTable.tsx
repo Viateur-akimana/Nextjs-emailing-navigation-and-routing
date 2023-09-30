@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from  "next/link";
+import { sort } from 'fast-sort';
 
 //this is  the interface
 interface User{
@@ -7,13 +8,18 @@ interface User{
     name:string;
     email:string;
 }
+interface Props{
+    sortOrder:string;
+}
+
 const getAllUsers = async()=>{
     const res = await fetch("https://jsonplaceholder.typicode.com/users");
     return res.json();
   }
 
-const userTable = async() => {
+const userTable = async({sortOrder}:Props) => {
     const users:User[] = await getAllUsers()
+    const sortedUser = sort(users).asc(sortOrder === "email" ? user => user.email : user => user.name)
   return (
     <div>
         <table className='table table-border border-black'>
@@ -28,7 +34,7 @@ const userTable = async() => {
     </tr>
   </thead>
   <tbody>
-    {users.map(user => <tr className='mx-2 py-0' key={user.id}>
+    {sortedUser.map(user => <tr className='mx-2 py-0' key={user.id}>
       <td>{user.name}</td>
       <td>{user.email}</td>
     </tr> )}
