@@ -7,7 +7,10 @@ export default async function Home() {
   const session= await getServerSession(AuthOptions)
   return (
     <main>
-      <h1>Hello {session && <span>{session.user!.name}</span> }</h1>
+      <h1>Hello {session && <div>
+        {session.user!.name}
+        <link href="api/auth/signout">Signout</link>
+        </div> }</h1>
       <Link href="/">users</Link>
     </main>
   )
